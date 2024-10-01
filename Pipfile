@@ -10,6 +10,7 @@ djangorestframework-simplejwt = "*"
 dj-database-url = "*"
 drf-yasg = "*"
 python-dotenv = "*"
+whitenoise = "*"
 
 [dev-packages]
 

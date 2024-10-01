@@ -4,11 +4,14 @@ from django.db import models
 # Create your models here.
 
 class CustomUserManager(BaseUserManager):
+    def normalize_username(self, username):
+        return username.strip().lower()  # Normalize the username by stripping whitespace and converting to lowercase
+
     def create_user(self, email, username, password=None, **extra_fields):
         if not email:
             raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
-        username = self.normalize_username(username)
+        username = self.normalize_username(username)  # Call the normalization method here
         user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)

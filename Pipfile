@@ -9,6 +9,7 @@ djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 dj-database-url = "*"
 drf-yasg = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

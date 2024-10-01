@@ -1,12 +1,12 @@
 from rest_framework import generics
 from rest_framework.permissions import AllowAny,IsAuthenticated
-from .serializers import UserRegistrationSerializer , EmployeeSerializer,AchievementEmployeeSerializer
+from .serializers import UserRegistrationSerializer , EmployeeSerializer,AchievementEmployeeSerializer,DepartmentSerializer,AchievementSerializer
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Employee,AchievementEmployee
+from .models import Employee,AchievementEmployee ,Department,Achievement
 
 # User Registration
 class UserRegistrationView(generics.CreateAPIView):
@@ -50,3 +50,12 @@ class AchievementEmployeeListView(generics.ListAPIView):
     queryset = AchievementEmployee.objects.all()
     serializer_class = AchievementEmployeeSerializer
     permission_classes = [AllowAny]
+
+
+class DepartmentListView(generics.ListAPIView):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+
+class AchievementListView(generics.ListAPIView):
+    queryset = Achievement.objects.all()
+    serializer_class = AchievementSerializer

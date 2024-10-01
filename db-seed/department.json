@@ -1,0 +1,12 @@
+[
+  { "name": "Human Resources" },
+  { "name": "Finance" },
+  { "name": "Engineering" },
+  { "name": "Marketing" },
+  { "name": "Sales" },
+  { "name": "IT Support" },
+  { "name": "Operations" },
+  { "name": "Legal" },
+  { "name": "Research and Development" },
+  { "name": "Customer Service" }
+]

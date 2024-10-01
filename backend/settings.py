@@ -12,6 +12,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+import dj_database_url
+
+# Function to determine the database engine from the URL
+def get_db_engine_from_url(url):
+    if url.startswith("mysql://"):
+        return "django.db.backends.mysql"
+    elif url.startswith("postgres://"):
+        return "django.db.backends.postgresql"
+    elif url.startswith("sqlite:///"):
+        return "django.db.backends.sqlite3"
+    else:
+        raise ValueError("Unsupported database URL scheme")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +35,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_hi9^ba!*)*9w07%68u**=z7l*$l@yo$ni^k*e#(&@^uh-1nuk'
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
+
+
+
 
 
 # Application definition
@@ -98,13 +118,16 @@ SIMPLE_JWT = {
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
+DATABASES = {
+    "default": dj_database_url.parse(
+        DATABASE_URL,
+        engine=get_db_engine_from_url(DATABASE_URL),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

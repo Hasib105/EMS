@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -17,4 +19,5 @@ urlpatterns = [
     path('employees/<int:pk>/', views.EmployeeCreateUpdateView.as_view(), name='employee-detail'),  # Retrieve, update, delete a specific employee
     path('achievements/', views.AchievementEmployeeListView.as_view(), name='achievement-employee-list'),  # List all AchievementEmployee records
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

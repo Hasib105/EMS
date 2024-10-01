@@ -16,7 +16,9 @@ urlpatterns = [
     #Employees Crud
     path('employees/', views.EmployeeListCreateView.as_view(), name='employee-list'),  # List all employees
     path('employees/<int:pk>/', views.EmployeeCreateUpdateView.as_view(), name='employee-detail'),  # Retrieve, update, delete a specific employee
-    path('achievements/', views.AchievementEmployeeListView.as_view(), name='achievement-employee-list'),  # List all AchievementEmployee records
+    path('employees/achievements/', views.AchievementEmployeeListView.as_view(), name='achievement-employee-list'),  # List all AchievementEmployee records
+    path('achievements/', views.AchievementListView.as_view(), name='achievement-employee-detail'),  # List of all Achivements
+    path('departments/', views.DepartmentListView.as_view(), name='department-list'), # List of all Departments
 
 ] 
 

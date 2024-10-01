@@ -14,6 +14,10 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import dj_database_url
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # Function to determine the database engine from the URL
 def get_db_engine_from_url(url):
@@ -26,7 +30,6 @@ def get_db_engine_from_url(url):
     else:
         raise ValueError("Unsupported database URL scheme")
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,15 +38,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",")
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 
 
@@ -119,7 +122,7 @@ SIMPLE_JWT = {
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 DATABASES = {
     "default": dj_database_url.parse(

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-
+from datetime import datetime
 # Create your models here.
 
 class CustomUserManager(BaseUserManager):
@@ -51,28 +51,31 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
+class Achievement(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 class Employee(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
     address = models.TextField()
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    achievements = models.ManyToManyField('Achievement', through='AchievementEmployee')
+    achievements = models.ManyToManyField(Achievement, related_name='employees')
 
     def __str__(self):
         return self.name
 
-class Achievement(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
 
 
 class AchievementEmployee(models.Model):
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    achievement_date = models.DateField()
+    achievement_date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('achievement', 'employee',)
 
     def __str__(self):
         return f"{self.employee.name} - {self.achievement.name} on {self.achievement_date}"
